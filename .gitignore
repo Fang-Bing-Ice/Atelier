@@ -1,0 +1,13 @@
+# 密钥与本地配置（绝不要提交）
+.env
+.env.*
+*.key
+secrets.*
+
+# 依赖与构建产物
+node_modules/
+__pycache__/
+*.pyc
+
+# 运行产物
+output/

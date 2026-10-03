@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "skills": {
+    "apiyi": {
+      "source": "docs.apiyi.com",
+      "sourceUrl": "https://docs.apiyi.com",
+      "sourceType": "well-known",
+      "computedHash": "4b6d2a47cb3347dea98b962ce74fdb6e7e254b17926fbd01cbefeb85f2d2a73b",
+      "wellKnownDigest": "sha256:39f1c124c6b676741a3ef8eb5aa31a9a9640200b3b144ea5d24bef96fc4eb114"
+    }
+  }
+}

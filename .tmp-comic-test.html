@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>comic styles test</title>
+<link rel="stylesheet" href="css/fonts.css" />
+<style>
+  body{margin:0;background:#F1EFE8;font-family:"Atelier Sans",sans-serif}
+  #grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px}
+  figure{margin:0;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px -12px rgba(0,0,0,.4)}
+  figcaption{padding:8px 12px;font-size:13px;color:#333;display:flex;justify-content:space-between}
+  canvas{display:block;width:100%;height:auto}
+</style>
+</head>
+<body>
+<div id="grid"></div>
+<script src="js/util.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/comic.js"></script>
+<script>
+(async function () {
+  var params = new URLSearchParams(location.search);
+  var file = params.get('img') || '010.png';
+  var strength = parseFloat(params.get('strength') || '62');
+  var line = parseFloat(params.get('line') || '55');
+  var grain = parseFloat(params.get('grain') || '45');
+  var img = new Image();
+  img.src = file;
+  await img.decode();
+  await (document.fonts ? document.fonts.ready : Promise.resolve());
+  var grid = document.getElementById('grid');
+  var t0 = performance.now();
+  var timings = [];
+  Object.keys(Render.COMIC_STYLES).forEach(function (key) {
+    var s0 = performance.now();
+    var out = Render.comic(img, { style: key, strength: strength, line: line, grain: grain, seed: 91 });
+    timings.push(key + ':' + Math.round(performance.now() - s0) + 'ms');
+    var fig = document.createElement('figure');
+    var cap = document.createElement('figcaption');
+    cap.innerHTML = '<strong>' + Render.COMIC_STYLES[key].label + '</strong><span>' + out.width + '×' + out.height + '</span>';
+    fig.appendChild(out);
+    fig.appendChild(cap);
+    grid.appendChild(fig);
+  });
+  window.__timings = timings;
+  window.__done = true;
+  document.title = 'done ' + timings.join(' ');
+})();
+</script>
+</body>
+</html>

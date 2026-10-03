@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Atelier · 图片创作工作台</title>
+<meta name="description" content="Claude 风格界面的本地图片创作工作台：海报化、水彩化、拼贴化、简笔化、漫画风格化与签名动画。" />
+<link rel="stylesheet" href="css/fonts.css?v=2" />
+<link rel="stylesheet" href="css/style.css?v=2" />
+<link rel="stylesheet" href="css/ai.css?v=2" />
+</head>
+<body>
+<div class="app">
+  <!-- ============ 侧边栏 ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <svg class="brand__mark" viewBox="0 0 100 100" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="10" stroke-linecap="round">
+          <line x1="92" y1="50" x2="63" y2="50"/>
+          <line x1="86.4" y1="70" x2="61.3" y2="56.5"/>
+          <line x1="71" y1="84.6" x2="56.5" y2="61.3"/>
+          <line x1="50" y1="92" x2="50" y2="63"/>
+          <line x1="29" y1="84.6" x2="43.5" y2="61.3"/>
+          <line x1="13.6" y1="70" x2="38.7" y2="56.5"/>
+          <line x1="8" y1="50" x2="37" y2="50"/>
+          <line x1="13.6" y1="30" x2="38.7" y2="43.5"/>
+          <line x1="29" y1="15.4" x2="43.5" y2="38.7"/>
+          <line x1="50" y1="8" x2="50" y2="37"/>
+          <line x1="71" y1="15.4" x2="56.5" y2="38.7"/>
+          <line x1="86.4" y1="30" x2="61.3" y2="43.5"/>
+        </g>
+      </svg>
+      <div class="brand__text">
+        <span class="brand__name">Atelier</span>
+        <span class="brand__sub">图片创作工作台</span>
+      </div>
+    </div>
+
+    <button class="newchat" type="button" data-open-tool="home">
+      <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      新建作品
+    </button>
+
+    <nav class="nav">
+      <p class="nav__label">创作工具</p>
+
+      <button class="nav__item" type="button" data-open-tool="poster" data-tool-nav="poster">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M7 15.5V9M12 15.5V6.5M17 15.5v-5"/></svg>
+        <span>图片海报化</span><em>2</em>
+      </button>
+
+      <button class="nav__item" type="button" data-open-tool="watercolor" data-tool-nav="watercolor">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3s5.5 6.1 5.5 10a5.5 5.5 0 0 1-11 0C6.5 9.1 12 3 12 3Z"/><path d="M9.6 13.4a2.6 2.6 0 0 0 2.6 2.6"/></svg>
+        <span>图片水彩化</span>
+      </button>
+
+      <button class="nav__item" type="button" data-open-tool="signature" data-tool-nav="signature">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3 17.5c4.5 0 6-11 9.2-11 2.4 0 1.4 6.2 3.4 6.2 1.3 0 1.9-1.4 2.2-2.6"/><path d="M5.5 20.5h13"/></svg>
+        <span>签名动画</span>
+      </button>
+
+      <button class="nav__item" type="button" data-open-tool="collage" data-tool-nav="collage">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="3" y="3" width="8" height="12" rx="1.5"/><rect x="13" y="7" width="8" height="14" rx="1.5"/><circle cx="8" cy="18" r="3"/></svg>
+        <span>图片拼贴化</span>
+      </button>
+
+      <button class="nav__item" type="button" data-open-tool="sketch" data-tool-nav="sketch">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3.5 19.5h17"/><path d="M6 19.5V10l6-5.5 6 5.5v9.5"/><path d="M11 19.5v-5h3v5"/></svg>
+        <span>图片简笔化</span>
+      </button>
+
+      <button class="nav__item" type="button" data-open-tool="comic" data-tool-nav="comic">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="M8 10.5h.01M12 8.5h.01M16 12.5h.01"/><path d="M4 19c2.4-1.6 3.8-2.4 5.2-2.4 1.6 0 2.4 1.2 4.3 1.2 1.3 0 2.4-.5 3.6-1.4"/></svg>
+        <span>漫画风格化</span><em>8</em>
+      </button>
+    </nav>
+
+    <div class="sidebar__foot">
+      <div class="privacy">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3.5 5 6.4v5.3c0 4.2 2.9 7.3 7 8.8 4.1-1.5 7-4.6 7-8.8V6.4z"/><path d="m9.2 12.2 2 2 3.6-3.8"/></svg>
+        <span>图片只在本机浏览器处理，不会上传到任何服务器。</span>
+      </div>
+      <div class="account">
+        <span class="avatar">A</span>
+        <div class="account__text">
+          <strong>Local Studio</strong>
+          <small>个人工作台</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ 主区域 ============ -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="iconbtn" type="button" data-toggle-sidebar aria-label="展开侧边栏">
+          <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="crumb">
+          <span id="crumb-tool">开始创作</span>
+          <span class="crumb__sep">·</span>
+          <span id="crumb-sub">选择一个工具开始</span>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <button class="btn btn--ghost btn--sm" type="button" data-ai-open>
+          <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3.5 13.9 9l5.6 1.9-5.6 1.9L12 18.5l-1.9-5.7L4.5 10.9 10.1 9Z"/><path d="M18.5 16.5 19.3 19l2.2.8-2.2.8-.8 2.4-.8-2.4-2.2-.8 2.2-.8Z"/></svg>
+          AI 助手
+        </button>
+        <button class="btn btn--ghost btn--sm" type="button" data-copy-prompt-active>
+          <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3H6.5A2.5 2.5 0 0 0 4 5.5v6A2.5 2.5 0 0 0 6.5 14"/></svg>
+          复制提示词
+        </button>
+        <button class="btn btn--primary btn--sm" type="button" data-download disabled>
+          <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 19.5h15"/></svg>
+          导出 PNG
+        </button>
+      </div>
+    </header>
+
+    <div class="scroll" id="scroll">
+
+      <!-- ============ 首页 ============ -->
+      <section class="tool" data-tool="home">
+        <div class="home-hero">
+          <span class="chip">LOCAL IMAGE STUDIO</span>
+          <h1 class="serif">把一张照片，<br />变成六种作品。</h1>
+          <p>海报、水彩、拼贴、简笔、漫画与签名动画 —— 全部在本地完成，即开即用，不上传、不排队。</p>
+        </div>
+
+        <div class="cards">
+          <button class="card-tool" type="button" data-open-tool="poster">
+            <span class="card-tool__ico">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M7 15.5V9M12 15.5V6.5M17 15.5v-5"/></svg>
+            </span>
+            <span class="card-tool__title">图片海报化</span>
+            <span class="card-tool__desc">超大窄体字的单一主题海报，或带纸张质感的 zine 海报。</span>
+            <span class="card-tool__meta">2 种风格</span>
+          </button>
+
+          <button class="card-tool" type="button" data-open-tool="watercolor">
+            <span class="card-tool__ico">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3s5.5 6.1 5.5 10a5.5 5.5 0 0 1-11 0C6.5 9.1 12 3 12 3Z"/><path d="M9.6 13.4a2.6 2.6 0 0 0 2.6 2.6"/></svg>
+            </span>
+            <span class="card-tool__title">图片水彩化</span>
+            <span class="card-tool__desc">钢笔淡彩手账插画，可加取自原图主色调的纯色色卡。</span>
+            <span class="card-tool__meta">色卡可调</span>
+          </button>
+
+          <button class="card-tool" type="button" data-open-tool="signature">
+            <span class="card-tool__ico">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3 17.5c4.5 0 6-11 9.2-11 2.4 0 1.4 6.2 3.4 6.2 1.3 0 1.9-1.4 2.2-2.6"/><path d="M5.5 20.5h13"/></svg>
+            </span>
+            <span class="card-tool__title">签名动画</span>
+            <span class="card-tool__desc">输入签名即可生成 10 秒以内的书写生长动画，可导出视频。</span>
+            <span class="card-tool__meta">可导出 WebM</span>
+          </button>
+
+          <button class="card-tool" type="button" data-open-tool="collage">
+            <span class="card-tool__ico">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="3" y="3" width="8" height="12" rx="1.5"/><rect x="13" y="7" width="8" height="14" rx="1.5"/><circle cx="8" cy="18" r="3"/></svg>
+            </span>
+            <span class="card-tool__title">图片拼贴化</span>
+            <span class="card-tool__desc">建筑拼贴蒙太奇，碎片化几何叠加与复古做旧印刷质感。</span>
+            <span class="card-tool__meta">3 种色调</span>
+          </button>
+
+          <button class="card-tool" type="button" data-open-tool="sketch">
+            <span class="card-tool__ico">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3.5 19.5h17"/><path d="M6 19.5V10l6-5.5 6 5.5v9.5"/><path d="M11 19.5v-5h3v5"/></svg>
+            </span>
+            <span class="card-tool__title">图片简笔化</span>
+            <span class="card-tool__desc">扁平矢量建筑草图 + 米黄纸张留白，附编号与小诗排版。</span>
+            <span class="card-tool__meta">排版固定</span>
+          </button>
+
+          <button class="card-tool" type="button" data-open-tool="comic">
+            <span class="card-tool__ico">
+              <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="M8 10.5h.01M12 8.5h.01M16 12.5h.01"/><path d="M4 19c2.4-1.6 3.8-2.4 5.2-2.4 1.6 0 2.4 1.2 4.3 1.2 1.3 0 2.4-.5 3.6-1.4"/></svg>
+            </span>
+            <span class="card-tool__title">漫画风格化</span>
+            <span class="card-tool__desc">赛璐璐、吉卜力、新海诚、羊毛毡、水墨、油画等八种画风一键转换。</span>
+            <span class="card-tool__meta">8 种画风</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ============ 1. 图片海报化 ============ -->
+      <section class="tool" data-tool="poster" hidden>
+        <div class="tool__intro">
+          <span class="chip">01 · POSTER</span>
+          <h1 class="serif">图片海报化</h1>
+          <p>把照片中的一个主体，转化为「超大窄体字 + 单一主题」的编辑海报，或带纸张质感的 zine 海报。</p>
+        </div>
+
+        <div class="workspace">
+          <div class="controls">
+            <div class="card">
+              <div class="card__head"><h2>参考图</h2><button class="sample-link" type="button" data-demo="poster">载入示例</button></div>
+              <label class="drop" data-drop="poster">
+                <input type="file" accept="image/*" hidden />
+                <span class="drop__icon">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 16.5V6"/><path d="m7.5 10.5 4.5-4.5 4.5 4.5"/><path d="M4.5 19.5h15"/></svg>
+                </span>
+                <span class="drop__title">点击或拖入图片</span>
+                <span class="drop__hint">主体清晰、背景干净的照片效果最好</span>
+                <img class="drop__thumb" alt="" hidden />
+                <span class="drop__file" hidden></span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>海报设置</h2></div>
+
+              <div class="field">
+                <label for="poster-style">海报风格</label>
+                <div class="select">
+                  <select id="poster-style" data-field="style">
+                    <option value="hero">单一主题 · editorial-hero-type-poster</option>
+                    <option value="paper">纸张质感 · paper-spirit-zine</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+
+              <div class="fieldgroup" data-when="hero">
+                <div class="field">
+                  <label>主标题（超大窄体字）</label>
+                  <input class="input" type="text" data-field="title" value="DRIFT" maxlength="18" />
+                </div>
+                <div class="field">
+                  <label>副标题</label>
+                  <input class="input" type="text" data-field="subtitle" value="PALE — FLOAT — CURRENT" />
+                </div>
+                <div class="field">
+                  <label>标本 / 说明文字</label>
+                  <input class="input" type="text" data-field="meta" value="SPECIMEN — CARASSIUS AURATUS" />
+                </div>
+                <div class="field">
+                  <label>底色</label>
+                  <div class="select">
+                    <select data-field="bg">
+                      <option value="auto">自动（取自图片主色调）</option>
+                      <option value="ink">深海墨蓝</option>
+                      <option value="moss">苔藓灰绿</option>
+                      <option value="cream">米白纸感</option>
+                      <option value="clay">赭石暖棕</option>
+                    </select>
+                    <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fieldgroup" data-when="paper" hidden>
+                <div class="field">
+                  <label>中文短句</label>
+                  <input class="input" type="text" data-field="caption" value="「海把弧线留在纸上」" />
+                </div>
+                <div class="field">
+                  <label>英文小标</label>
+                  <input class="input" type="text" data-field="meta" value="PAPER SPIRIT — ZINE" />
+                </div>
+              </div>
+
+              <label class="switch">
+                <input type="checkbox" data-field="grain" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>添加纸张颗粒与做旧质感</span>
+              </label>
+            </div>
+
+            <button class="btn btn--primary btn--block" type="button" data-run="poster">生成海报</button>
+
+            <details class="prompt">
+              <summary>查看 / 复制完整提示词</summary>
+              <pre data-prompt-text="poster"></pre>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy-prompt="poster">复制提示词</button>
+            </details>
+          </div>
+
+          <div class="stage">
+            <div class="stage__bar">
+              <div class="stage__title"><span class="dot"></span>预览</div>
+              <div class="stage__actions">
+                <button class="btn btn--ghost btn--sm" type="button" data-shuffle="poster">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8h8"/><path d="M8 16h8"/></svg>
+                  换一种构图
+                </button>
+              </div>
+            </div>
+            <div class="stage__body" data-stage="poster">
+              <canvas id="canvas-poster" width="1200" height="1600" hidden></canvas>
+              <div class="placeholder">
+                <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 16 4-4.5 3 3.2 2-2.2 2 3.5"/><circle cx="9" cy="9" r="1.4"/></svg>
+                <p>上传图片后，这里会自动生成海报预览</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 2. 图片水彩化 ============ -->
+      <section class="tool" data-tool="watercolor" hidden>
+        <div class="tool__intro">
+          <span class="chip">02 · WATERCOLOR</span>
+          <h1 class="serif">图片水彩化</h1>
+          <p>钢笔淡彩手账插画：黑色细钢笔轻勾轮廓，四周不规则水彩晕染向外淡出，可自选色卡数量、形状与位置。</p>
+        </div>
+
+        <div class="workspace">
+          <div class="controls">
+            <div class="card">
+              <div class="card__head"><h2>参考图</h2><button class="sample-link" type="button" data-demo="watercolor">载入示例</button></div>
+              <label class="drop" data-drop="watercolor">
+                <input type="file" accept="image/*" hidden />
+                <span class="drop__icon">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 16.5V6"/><path d="m7.5 10.5 4.5-4.5 4.5 4.5"/><path d="M4.5 19.5h15"/></svg>
+                </span>
+                <span class="drop__title">点击或拖入图片</span>
+                <span class="drop__hint">风景、城市、静物都能画得很治愈</span>
+                <img class="drop__thumb" alt="" hidden />
+                <span class="drop__file" hidden></span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>水彩设置</h2></div>
+              <div class="field">
+                <label>淡彩浓度<span class="val" data-val="wcIntensity">55%</span></label>
+                <input type="range" min="0" max="100" value="55" data-field="intensity" data-out="wcIntensity" data-suffix="%" />
+              </div>
+              <div class="field">
+                <label>手写标题</label>
+                <input class="input" type="text" data-field="title" value="Golden Hour Garden." />
+              </div>
+              <div class="field">
+                <label>手写短句</label>
+                <input class="input" type="text" data-field="subtitle" value="Chase the light, bloom where you are." />
+              </div>
+              <label class="switch">
+                <input type="checkbox" data-field="paper" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>水彩纸肌理</span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>色卡</h2><span class="hint">颜色取自原图主色调</span></div>
+              <label class="switch">
+                <input type="checkbox" data-field="swatchOn" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>在画面中添加色卡</span>
+              </label>
+              <div class="field">
+                <label>色卡数量<span class="val" data-val="wcCount">4</span></label>
+                <input type="range" min="2" max="8" value="4" data-field="swatchCount" data-out="wcCount" />
+              </div>
+              <div class="field">
+                <label>色卡形状</label>
+                <div class="select">
+                  <select data-field="swatchShape">
+                    <option value="round">圆角方形</option>
+                    <option value="circle">圆形</option>
+                    <option value="pill">胶囊</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <div class="field">
+                <label>色卡位置</label>
+                <div class="select">
+                  <select data-field="swatchPos">
+                    <option value="bottom-right">右下角</option>
+                    <option value="bottom-left">左下角</option>
+                    <option value="top-right">右上角</option>
+                    <option value="top-left">左上角</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--block" type="button" data-run="watercolor">生成水彩画</button>
+
+            <details class="prompt">
+              <summary>查看 / 复制完整提示词</summary>
+              <pre data-prompt-text="watercolor"></pre>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy-prompt="watercolor">复制提示词</button>
+            </details>
+          </div>
+
+          <div class="stage">
+            <div class="stage__bar">
+              <div class="stage__title"><span class="dot"></span>预览</div>
+              <div class="stage__actions">
+                <button class="btn btn--ghost btn--sm" type="button" data-shuffle="watercolor">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8h8"/><path d="M8 16h8"/></svg>
+                  换一种笔触
+                </button>
+              </div>
+            </div>
+            <div class="stage__body" data-stage="watercolor">
+              <canvas id="canvas-watercolor" width="1200" height="1600" hidden></canvas>
+              <div class="placeholder">
+                <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3s5.5 6.1 5.5 10a5.5 5.5 0 0 1-11 0C6.5 9.1 12 3 12 3Z"/></svg>
+                <p>上传图片后，这里会自动生成水彩预览</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 3. 签名动画 ============ -->
+      <section class="tool" data-tool="signature" hidden>
+        <div class="tool__intro">
+          <span class="chip">03 · SIGNATURE MOTION</span>
+          <h1 class="serif">签名动画</h1>
+          <p>输入签名即可生成 10 秒以内的书写动画：笔画依次生长、线条跟随偏移、收笔带自然弹性。</p>
+        </div>
+
+        <div class="workspace">
+          <div class="controls">
+            <div class="card">
+              <div class="card__head"><h2>签名内容</h2></div>
+              <div class="field">
+                <label>签名文字</label>
+                <input class="input input--lg" type="text" data-field="text" value="Heminghao" maxlength="22" />
+              </div>
+              <div class="field">
+                <label>书写风格</label>
+                <div class="select">
+                  <select data-field="style">
+                    <option value="ink">墨黑钢笔</option>
+                    <option value="claude" selected>Claude 陶土橙</option>
+                    <option value="neon">霓虹粉白光</option>
+                    <option value="indigo">靛蓝墨迹</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <div class="field">
+                <label>背景</label>
+                <div class="select">
+                  <select data-field="bg">
+                    <option value="paper">米黄纸面</option>
+                    <option value="pink" selected>粉紫渐变 · 白点</option>
+                    <option value="dark">深色幕布</option>
+                    <option value="transparent">透明（导出 PNG 用）</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <div class="field">
+                <label>动画时长<span class="val" data-val="sigDur">6.0s</span></label>
+                <input type="range" min="3" max="10" step="0.5" value="6" data-field="duration" data-out="sigDur" data-suffix="s" data-decimals="1" />
+              </div>
+              <label class="switch">
+                <input type="checkbox" data-field="loop" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>循环播放</span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>导出</h2><span class="hint">WebM 可直接拖进剪辑软件</span></div>
+              <div class="row">
+                <button class="btn btn--primary btn--block" type="button" data-sign-play>播放动画</button>
+                <button class="btn btn--secondary btn--block" type="button" data-sign-record>录制并导出 WebM</button>
+                <button class="btn btn--ghost btn--block" type="button" data-sign-png>导出最终帧 PNG</button>
+              </div>
+            </div>
+
+            <details class="prompt">
+              <summary>查看 / 复制完整提示词</summary>
+              <pre data-prompt-text="signature"></pre>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy-prompt="signature">复制提示词</button>
+            </details>
+          </div>
+
+          <div class="stage">
+            <div class="stage__bar">
+              <div class="stage__title"><span class="dot"></span>预览</div>
+              <div class="stage__actions">
+                <span class="tag" data-sign-status>就绪</span>
+              </div>
+            </div>
+            <div class="stage__body is-checker" data-stage="signature">
+              <canvas id="canvas-signature" width="1280" height="720"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 4. 图片拼贴化 ============ -->
+      <section class="tool" data-tool="collage" hidden>
+        <div class="tool__intro">
+          <span class="chip">04 · COLLAGE</span>
+          <h1 class="serif">图片拼贴化</h1>
+          <p>建筑拼贴蒙太奇：照片被裁切成长方形与圆形碎片，多层错位叠加，配做旧米黄纸底与纤细英文小诗。</p>
+        </div>
+
+        <div class="workspace">
+          <div class="controls">
+            <div class="card">
+              <div class="card__head"><h2>参考图</h2><button class="sample-link" type="button" data-demo="collage">载入示例</button></div>
+              <label class="drop" data-drop="collage">
+                <input type="file" accept="image/*" hidden />
+                <span class="drop__icon">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 16.5V6"/><path d="m7.5 10.5 4.5-4.5 4.5 4.5"/><path d="M4.5 19.5h15"/></svg>
+                </span>
+                <span class="drop__title">点击或拖入图片</span>
+                <span class="drop__hint">横构图的天际线、桥梁、钟楼都合适</span>
+                <img class="drop__thumb" alt="" hidden />
+                <span class="drop__file" hidden></span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>拼贴设置</h2></div>
+              <div class="field">
+                <label>碎片密度</label>
+                <div class="select">
+                  <select data-field="density">
+                    <option value="low">轻盈（更留白）</option>
+                    <option value="mid" selected>适中</option>
+                    <option value="high">丰富（更多碎片）</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <div class="field">
+                <label>色调</label>
+                <div class="select">
+                  <select data-field="tone">
+                    <option value="sand" selected>米黄暖调</option>
+                    <option value="mist">灰蓝清冷</option>
+                    <option value="clay">暖棕复古</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <div class="field">
+                <label>英文小诗（每行一句）</label>
+                <textarea class="input" rows="3" data-field="poem">Where light dissolves
+Into quiet geometry.</textarea>
+              </div>
+              <div class="field">
+                <label>系列标识 / 水印</label>
+                <input class="input" type="text" data-field="mark" value="VLIONE." maxlength="14" />
+              </div>
+              <label class="switch">
+                <input type="checkbox" data-field="deco" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>圆点与参考线装饰</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" data-field="grain" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>纸张颗粒与暗角</span>
+              </label>
+            </div>
+
+            <button class="btn btn--primary btn--block" type="button" data-run="collage">生成拼贴画</button>
+
+            <details class="prompt">
+              <summary>查看 / 复制完整提示词</summary>
+              <pre data-prompt-text="collage"></pre>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy-prompt="collage">复制提示词</button>
+            </details>
+          </div>
+
+          <div class="stage">
+            <div class="stage__bar">
+              <div class="stage__title"><span class="dot"></span>预览</div>
+              <div class="stage__actions">
+                <button class="btn btn--ghost btn--sm" type="button" data-shuffle="collage">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8h8"/><path d="M8 16h8"/></svg>
+                  重新排布碎片
+                </button>
+              </div>
+            </div>
+            <div class="stage__body" data-stage="collage">
+              <canvas id="canvas-collage" width="1000" height="1500" hidden></canvas>
+              <div class="placeholder">
+                <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="3" y="3" width="8" height="12" rx="1.5"/><rect x="13" y="7" width="8" height="14" rx="1.5"/></svg>
+                <p>上传图片后，这里会自动生成拼贴预览</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 5. 图片简笔化 ============ -->
+      <section class="tool" data-tool="sketch" hidden>
+        <div class="tool__intro">
+          <span class="chip">05 · FLAT SKETCH</span>
+          <h1 class="serif">图片简笔化</h1>
+          <p>把建筑照片提炼成扁平化矢量草图：纯色块 + 清晰轮廓，铺在米黄做旧纸面上，右下编号、左下小诗。</p>
+        </div>
+
+        <div class="workspace">
+          <div class="controls">
+            <div class="card">
+              <div class="card__head"><h2>参考图</h2><button class="sample-link" type="button" data-demo="sketch">载入示例</button></div>
+              <label class="drop" data-drop="sketch">
+                <input type="file" accept="image/*" hidden />
+                <span class="drop__icon">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 16.5V6"/><path d="m7.5 10.5 4.5-4.5 4.5 4.5"/><path d="M4.5 19.5h15"/></svg>
+                </span>
+                <span class="drop__title">点击或拖入图片</span>
+                <span class="drop__hint">飞檐、大桥圆环、钻石立面等轮廓最辨识</span>
+                <img class="drop__thumb" alt="" hidden />
+                <span class="drop__file" hidden></span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>简笔设置</h2></div>
+              <div class="field">
+                <label>扁平色阶</label>
+                <div class="select">
+                  <select data-field="levels">
+                    <option value="4">4 色（更抽象）</option>
+                    <option value="6" selected>6 色（推荐）</option>
+                    <option value="8">8 色（更接近原图）</option>
+                  </select>
+                  <svg viewBox="0 0 24 24" class="ico select__caret" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" data-field="outline" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>保留清晰轮廓线</span>
+              </label>
+              <div class="field">
+                <label>纸张留白<span class="val" data-val="skPad">45%</span></label>
+                <input type="range" min="30" max="60" value="45" data-field="whitespace" data-out="skPad" data-suffix="%" />
+              </div>
+              <div class="field">
+                <label>作品编号（右下角）</label>
+                <input class="input" type="text" data-field="no" value="NO. 20240520" />
+              </div>
+              <div class="field">
+                <label>英文小诗（左下角）</label>
+                <textarea class="input" rows="2" data-field="poem">The city's silhouette,
+carved by light and time.</textarea>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--block" type="button" data-run="sketch">生成简笔画</button>
+
+            <details class="prompt">
+              <summary>查看 / 复制完整提示词</summary>
+              <pre data-prompt-text="sketch"></pre>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy-prompt="sketch">复制提示词</button>
+            </details>
+          </div>
+
+          <div class="stage">
+            <div class="stage__bar">
+              <div class="stage__title"><span class="dot"></span>预览</div>
+              <div class="stage__actions">
+                <button class="btn btn--ghost btn--sm" type="button" data-shuffle="sketch">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8h8"/><path d="M8 16h8"/></svg>
+                  重新简化
+                </button>
+              </div>
+            </div>
+            <div class="stage__body" data-stage="sketch">
+              <canvas id="canvas-sketch" width="1000" height="1500" hidden></canvas>
+              <div class="placeholder">
+                <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3.5 19.5h17"/><path d="M6 19.5V10l6-5.5 6 5.5v9.5"/></svg>
+                <p>上传图片后，这里会自动生成简笔预览</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 6. 图片漫画风格化 ============ -->
+      <section class="tool" data-tool="comic" hidden>
+        <div class="tool__intro">
+          <span class="chip">06 · COMIC STYLE</span>
+          <h1 class="serif">图片漫画风格化</h1>
+          <p>把照片转成动画与绘画质感：赛璐璐、吉卜力、新海诚、宫崎骏、羊毛毡、皮克斯、水墨、油画八种画风。</p>
+        </div>
+
+        <div class="workspace">
+          <div class="controls">
+            <div class="card">
+              <div class="card__head"><h2>参考图</h2><button class="sample-link" type="button" data-demo="comic">载入示例</button></div>
+              <label class="drop" data-drop="comic">
+                <input type="file" accept="image/*" hidden />
+                <span class="drop__icon">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 16.5V6"/><path d="m7.5 10.5 4.5-4.5 4.5 4.5"/><path d="M4.5 19.5h15"/></svg>
+                </span>
+                <span class="drop__title">点击或拖入图片</span>
+                <span class="drop__hint">人物、风景、街景都能转换，光线越清楚越好</span>
+                <img class="drop__thumb" alt="" hidden />
+                <span class="drop__file" hidden></span>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>画风</h2><span class="hint">8 种</span></div>
+              <div class="stylegrid">
+                  <button class="stylecard is-active" type="button" data-style="cel" style="--c1:#5B7FC7;--c2:#F0B45F">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">赛璐璐</span>
+                      <span class="stylecard__hint">平涂 + 黑描边</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="ghibli" style="--c1:#8FBF7A;--c2:#F6E7BC">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">吉卜力</span>
+                      <span class="stylecard__hint">柔和平涂水彩</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="shinkai" style="--c1:#54A6E8;--c2:#FFD58C">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">新海诚</span>
+                      <span class="stylecard__hint">通透光影 Bloom</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="miyazaki" style="--c1:#79A868;--c2:#DCE8C4">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">宫崎骏</span>
+                      <span class="stylecard__hint">手绘水彩氤氲</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="wool" style="--c1:#C9A98C;--c2:#EFE3D2">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">羊毛毡</span>
+                      <span class="stylecard__hint">毛绒纤维定格</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="pixar" style="--c1:#F09A50;--c2:#6CB0E0">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">皮克斯</span>
+                      <span class="stylecard__hint">三维柔和体积感</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="ink" style="--c1:#3B3A38;--c2:#E9E3D5">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">水墨</span>
+                      <span class="stylecard__hint">宣纸晕染留白</span>
+                    </span>
+                  </button>
+                  <button class="stylecard" type="button" data-style="oil" style="--c1:#B4623C;--c2:#6E8A4E">
+                    <span class="stylecard__dot" aria-hidden="true"></span>
+                    <span class="stylecard__text">
+                      <span class="stylecard__name">油画</span>
+                      <span class="stylecard__hint">厚涂笔触肌理</span>
+                    </span>
+                  </button>
+              </div>
+              <input type="hidden" data-field="style" value="cel" />
+            </div>
+
+            <div class="card">
+              <div class="card__head"><h2>画面调节</h2></div>
+              <div class="field">
+                <label>风格强度<span class="val" data-val="cmStrength">62%</span></label>
+                <input type="range" min="0" max="100" value="62" data-field="strength" data-out="cmStrength" data-suffix="%" />
+              </div>
+              <div class="field">
+                <label>轮廓 / 笔触<span class="val" data-val="cmLine">55%</span></label>
+                <input type="range" min="0" max="100" value="55" data-field="line" data-out="cmLine" data-suffix="%" />
+              </div>
+              <div class="field">
+                <label>颗粒质感<span class="val" data-val="cmGrain">45%</span></label>
+                <input type="range" min="0" max="100" value="45" data-field="grain" data-out="cmGrain" data-suffix="%" />
+              </div>
+              <label class="switch">
+                <input type="checkbox" data-field="paper" checked />
+                <span class="switch__track" aria-hidden="true"></span>
+                <span>纸张 / 画布肌理</span>
+              </label>
+            </div>
+
+            <button class="btn btn--primary btn--block" type="button" data-run="comic">生成漫画风格</button>
+
+            <details class="prompt">
+              <summary>查看 / 复制完整提示词</summary>
+              <pre data-prompt-text="comic"></pre>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy-prompt="comic">复制提示词</button>
+            </details>
+          </div>
+
+          <div class="stage">
+            <div class="stage__bar">
+              <div class="stage__title"><span class="dot"></span>预览</div>
+              <div class="stage__actions">
+                <button class="btn btn--ghost btn--sm" type="button" data-shuffle="comic">
+                  <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8h8"/><path d="M8 16h8"/></svg>
+                  换一种画法
+                </button>
+              </div>
+            </div>
+            <div class="stage__body" data-stage="comic">
+              <canvas id="canvas-comic" width="1340" height="900" hidden></canvas>
+              <div class="placeholder">
+                <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="M8 10.5h.01M12 8.5h.01M16 12.5h.01"/></svg>
+                <p>上传图片后，这里会自动生成漫画风格预览</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="pagefoot">
+        <span>Atelier · Local Image Studio</span>
+        <span>所有渲染都在你的浏览器里完成</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<!-- ============ API易 AI 助手 ============ -->
+<div class="ai" id="ai" hidden>
+  <div class="ai__scrim" data-ai-close></div>
+  <aside class="ai__panel" role="dialog" aria-modal="true" aria-label="API易 助手">
+    <header class="ai__head">
+      <div class="ai__title"><span class="ai__dot"></span>API易 助手</div>
+      <div class="ai__row">
+        <span class="ai__badge" data-ai-status>检测中…</span>
+        <button class="iconbtn" type="button" data-ai-close aria-label="关闭">
+          <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6 6 18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="ai__tabs">
+      <button class="ai__tab is-active" type="button" data-ai-tab="chat">对话</button>
+      <button class="ai__tab" type="button" data-ai-tab="image">出图</button>
+    </div>
+
+    <div class="ai__body">
+      <section class="ai__pane" data-ai-pane="chat">
+        <div class="ai__log" data-ai-log></div>
+        <div class="ai__compose">
+          <textarea class="ai__input" data-ai-input placeholder="问点什么…（Enter 发送，Shift+Enter 换行）"></textarea>
+          <div class="ai__row">
+            <select class="ai__select" data-ai-model aria-label="对话模型"></select>
+            <button class="btn btn--primary btn--sm" type="button" data-ai-send>发送</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="ai__pane" data-ai-pane="image" hidden>
+        <label class="ai__label">提示词</label>
+        <textarea class="ai__input" data-ai-img-prompt rows="7" placeholder="描述你要的画面，例如：钢笔淡彩手账插画，低饱和，四周不规则水彩晕染向外淡出，底部留白…"></textarea>
+        <div class="ai__row">
+          <button class="btn btn--ghost btn--sm" type="button" data-ai-pull-prompt>填入当前工具提示词</button>
+        </div>
+        <label class="ai__label">参考图（可选，选了就走图片编辑，保构图）</label>
+        <input class="ai__select" type="file" accept="image/png,image/jpeg,image/webp" data-ai-img-ref />
+        <div class="ai__grid">
+          <div>
+            <label class="ai__label">模型</label>
+            <select class="ai__select" data-ai-img-model></select>
+          </div>
+          <div>
+            <label class="ai__label">尺寸</label>
+            <select class="ai__select" data-ai-img-size></select>
+          </div>
+          <div>
+            <label class="ai__label">画质</label>
+            <select class="ai__select" data-ai-img-quality>
+              <option value="low">low（最快）</option>
+              <option value="medium">medium</option>
+              <option value="high" selected>high</option>
+              <option value="xhigh">xhigh（2.5）</option>
+              <option value="max">max（2.5）</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn--primary btn--block" type="button" data-ai-img-run>生成图片（约 1-5 分钟）</button>
+        <p class="ai__hint">图片是同步长请求，请勿中途关闭页面；客户端断开服务端仍会计费。</p>
+        <div class="ai__result" data-ai-img-result hidden></div>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="js/util.js?v=2"></script>
+<script src="js/effects.js?v=2"></script>
+<script src="js/comic.js?v=2"></script>
+<script src="js/signature.js?v=2"></script>
+<script src="js/app.js?v=2"></script>
+<script src="js/ai.js?v=2"></script>
+</body>
+</html>
